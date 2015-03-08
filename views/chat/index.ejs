@@ -1,0 +1,32 @@
+<% include ../partials/head %>
+<% include ../partials/menu %>
+
+  <header>
+    <h1>Chat</h1>
+  </header>
+
+  <section>
+    <pre id="chat"></pre>
+
+    <input type="text" id="txtMessage" placeholder="Message...">
+    <button class="btn btn-default" id="btnSend">Send</button>
+  </section>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io('http://localhost:3000');
+
+    socket.emit('join', '<%- room %>');
+
+    socket.on('send-client', function (msg) {
+      document.getElementById('chat').innerHTML += msg;
+    });
+
+    var sendMessage = function () {
+      socket.emit('send-server', {'message': document.getElementById('txtMessage').value});
+    };
+
+    document.getElementById('btnSend').addEventListener('click', sendMessage);
+  </script>
+
+<% include ../partials/footer %>

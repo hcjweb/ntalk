@@ -1,0 +1,49 @@
+<% include ../partials/head %>
+<% include ../partials/menu %>
+
+  <header>
+    <h1>Contacts list <small>Welcome, <%- user.name %></small></h1>
+  </header>
+
+  <form class="form-inline" action="/contacts" method="post">
+    <div class="form-group">
+      <label for="txtName">Name:</label>
+      <input type="text" class="form-control" id="txtName" name="txtName" required>
+    </div>
+
+    <div class="form-group">
+      <label for="txtEmail">E-mail:</label>
+      <input type="email" class="form-control" id="txtEmail" name="txtEmail" required>
+    </div>
+
+    <button type="submit" class="btn btn-default">Create</button>
+  </form>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Status</th>
+        <th>Name</th>
+        <th>E-mail</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% contacts.forEach(function (contact) { %>
+        <tr>
+          <td>
+            <a href="/contacts/<%- contact._id %>" class="btn btn-default">Details</a>
+            <a href="/chat/" class="btn btn-default" id="chat_<%- contact.email %>" data-room="">Chat</a>
+          </td>
+
+          <td><span id="notify_<%- contact.email %>" class="label label-default">Offline</span></td>
+          <td><%- contact.name %></td>
+          <td><%- contact.email %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+<% include partials/notifications %>
+<% include ../partials/footer %>
