@@ -6,6 +6,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
     load = require('express-load'),
+    compression = require('compression'),
     app = express(),
     server = require('http').Server(app),
     io = require('socket.io')(server),
@@ -15,6 +16,7 @@ var express = require('express'),
 
 app.set('views', __dirname+ '/views');
 app.set('view engine', 'ejs');
+app.use(compression());
 app.use(cookie);
 app.use(expressSession({
   'secret': SECRET,
@@ -26,7 +28,9 @@ app.use(expressSession({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(methodOverride('__method'));
-app.use(express.static(__dirname+ '/public'));
+app.use(express.static(__dirname+ '/public', {
+  'maxAge': 3600000
+}));
 
 io.use(function (socket, next) {
   var data = socket.request;
