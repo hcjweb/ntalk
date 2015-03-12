@@ -6,6 +6,8 @@
   </header>
 
   <form action="/contacts/<%- contact._id %>?__method=delete" method="post">
+    <input type="hidden" name="_csrf" value="<%- _csrf %>">
+
     <div class="form-group">
       <label for="txtName">Name:</label>
       <label><%- contact.name %></label>

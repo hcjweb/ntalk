@@ -6,6 +6,8 @@
   </header>
 
   <form class="form-inline" action="/contacts" method="post">
+    <input type="hidden" name="_csrf" value="<%- _csrf %>">
+
     <div class="form-group">
       <label for="txtName">Name:</label>
       <input type="text" class="form-control" id="txtName" name="txtName" required>

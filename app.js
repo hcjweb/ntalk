@@ -7,6 +7,7 @@ var express = require('express'),
     methodOverride = require('method-override'),
     load = require('express-load'),
     compression = require('compression'),
+    csurf = require('csurf'),
     app = express(),
     server = require('http').Server(app),
     io = require('socket.io')(server),
@@ -28,9 +29,14 @@ app.use(expressSession({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(methodOverride('__method'));
+app.use(csurf());
 app.use(express.static(__dirname+ '/public', {
   'maxAge': 3600000
 }));
+app.use(function (request, response, next) {
+  response.locals._csrf = request.csrfToken();
+  next();
+});
 
 io.use(function (socket, next) {
   var data = socket.request;
